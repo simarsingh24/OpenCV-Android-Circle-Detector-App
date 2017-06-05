@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -12,21 +12,9 @@ import com.flurgle.camerakit.CameraKit;
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.JavaCameraView;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
-
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
     private CameraView cameraView;
-    private Button button;
+    private Button capture_button;
     private ImageView capturedImage;
     private ImageView processedImage;
 
@@ -42,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         cameraView.setFocus(CameraKit.Constants.FOCUS_CONTINUOUS);
         cameraView.setMethod(CameraKit.Constants.METHOD_STILL);
         cameraView.setJpegQuality(40);
+        capture_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
 
         cameraView.setCameraListener(new CameraListener() {
             @Override
@@ -54,13 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
+                        capturedImage.setImageBitmap(finalBitmap);
                     }
                 });
             }
         });
     }
 
+    private void takePicture() {
+        cameraView.captureImage();
+    }
 
     @Override
     protected void onResume() {
@@ -76,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void linkViews() {
         cameraView=(CameraView)findViewById(R.id.cameraView);
-        button=(Button)findViewById(R.id.detect);
+        capture_button =(Button)findViewById(R.id.detect);
         capturedImage=(ImageView)findViewById(R.id.captured_image);
         processedImage=(ImageView)findViewById(R.id.processed_image);
+
+        capturedImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        processedImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
     }
 }
