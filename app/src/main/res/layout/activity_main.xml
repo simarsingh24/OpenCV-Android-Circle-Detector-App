@@ -28,6 +28,7 @@
             android:layout_height="match_parent"
             android:id="@+id/captured_image"
             android:padding="8dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"/>
         <ImageView
             android:layout_width="0dp"
