@@ -48,16 +48,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPictureTaken(byte[] picture) {
                 super.onPictureTaken(picture);
-                int INPUT_SIZE=227;
+                int INPUT_SIZE=400;
                 Bitmap original_bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
-                original_bitmap = Bitmap.createScaledBitmap(original_bitmap, INPUT_SIZE, INPUT_SIZE, false);
+                //original_bitmap = Bitmap.createScaledBitmap(original_bitmap, INPUT_SIZE, INPUT_SIZE, false);
                 final Bitmap finalBitmap = original_bitmap;
-                final Bitmap bitmap2=Bitmap.createBitmap(original_bitmap);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         capturedImage.setImageBitmap(finalBitmap);
-                        processedImage.setImageBitmap(opencvCenterDetect(bitmap2));
+                        processedImage.setImageBitmap(opencvCenterDetect(finalBitmap));
                     }
                 });
 
@@ -75,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
         Utils.bitmapToMat(bitmap, mat);
 
 /* convert to grayscale */
-        int colorChannels = (mat.channels() == 3) ? Imgproc.COLOR_BGR2GRAY
-                : ((mat.channels() == 4) ? Imgproc.COLOR_BGRA2GRAY : 1);
+        int colorChannels = (mat.channels() == 3) ? Imgproc.COLOR_RGB2GRAY
+                : ((mat.channels() == 4) ? Imgproc.COLOR_RGBA2GRAY : 1);
 
         Imgproc.cvtColor(mat, grayMat, colorChannels);
 
@@ -84,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
 /* reduce the noise so we avoid false circle detection */
         Imgproc.GaussianBlur(grayMat, grayMat, new Size(9, 9), 2, 2);
-
 // accumulator value
         double dp = 1.2d;
 // minimum distance between the center coordinates of detected circles in pixels
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 // detected (including false circles).
 // The larger the threshold is, the more circles will
 // potentially be returned.
-        double param1 = 70, param2 = 60;//72
+        double param1 = 60, param2 = 60;//72
 
 /* create a Mat object to store the circles detected */
         Mat circles = new Mat(bitmap.getWidth(),
