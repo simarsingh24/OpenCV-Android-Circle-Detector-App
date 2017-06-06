@@ -10,14 +10,6 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center|top" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:padding="16dp"
-        android:text="Process"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/detect"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -26,16 +18,69 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/captured_image"
-            android:padding="8dp"
-            android:layout_margin="8dp"
-            android:layout_weight="1"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:id="@+id/processed_image"
             android:padding="8dp"
             android:layout_weight="1" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Process"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/detect"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_margin="8dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:inputType="numberDecimal"
+                    android:layout_height="wrap_content"
+                    android:hint="dp"
+                    android:id="@+id/dp_edit_text"/>
+                <EditText
+                    android:layout_margin="8dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="40"
+                    android:inputType="numberDecimal"
+                    android:layout_height="wrap_content"
+                    android:hint="param1"
+                    android:id="@+id/param1_edit_text"/>
+            </LinearLayout>
+            <EditText
+                android:text="40"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="param2"
+                android:inputType="numberDecimal"
+                android:id="@+id/param2_edit_text"/>
+            <EditText
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="minRadius"
+                android:text="30"
+                android:inputType="numberDecimal"
+                android:id="@+id/minR_editText"/>
+            <EditText
+                android:text="200"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="maxRadius"
+                android:inputType="numberDecimal"
+                android:id="@+id/maxR_editText"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
