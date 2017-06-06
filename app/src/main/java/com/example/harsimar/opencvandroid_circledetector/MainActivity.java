@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap original_bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
                 original_bitmap = Bitmap.createScaledBitmap(original_bitmap, INPUT_SIZE, INPUT_SIZE, false);
                 final Bitmap finalBitmap = original_bitmap;
+                final Bitmap bitmap2=Bitmap.createBitmap(original_bitmap);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         capturedImage.setImageBitmap(finalBitmap);
-                        processedImage.setImageBitmap(opencvCenterDetect(finalBitmap));
+                        processedImage.setImageBitmap(opencvCenterDetect(bitmap2));
                     }
                 });
 
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 // detected (including false circles).
 // The larger the threshold is, the more circles will
 // potentially be returned.
-        double param1 = 70, param2 = 50;//72
+        double param1 = 70, param2 = 60;//72
 
 /* create a Mat object to store the circles detected */
         Mat circles = new Mat(bitmap.getWidth(),
