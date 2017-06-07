@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Bitmap opencvCenterDetectMethod2(Bitmap bitmap) {
+    private Bitmap opencvCenterDetectMethod2(Bitmap bitmap) {///for black background
         Mat mat = new Mat(bitmap.getWidth(), bitmap.getHeight(),
                 CvType.CV_8UC1);
 
@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         Imgproc.cvtColor(mat, grayMat, colorChannels);
 
 
-//write bitmap
         Mat threshed = new Mat(bitmap.getWidth(),bitmap.getHeight(), CvType.CV_8UC1);
         Imgproc.adaptiveThreshold(grayMat, threshed, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 75, 5);//15, 8 were original tests. Casey was 75,10
         Core.bitwise_not(threshed, threshed);
@@ -106,7 +105,29 @@ public class MainActivity extends AppCompatActivity {
         Imgproc.dilate(threshed, dilated,
                 Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new org.opencv.core.Size (16, 16)));
         Utils.matToBitmap(dilated, bitmap);
-//write bitmap
+        Mat eroded = new Mat(bitmap.getWidth(),bitmap.getHeight(), CvType.CV_8UC1);
+        Imgproc.erode(dilated, eroded, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new org.opencv.core.Size(15, 15)));
+        Utils.matToBitmap(eroded, bitmap);
+        Mat circles = new Mat();
+
+        int iCannyUpperThreshold = 100;
+        int iMinRadius = 20;
+        int iMaxRadius = 400;
+        int iAccumulator = 100;
+
+        Imgproc.HoughCircles(grayMat, circles, Imgproc.CV_HOUGH_GRADIENT,
+                1.0, grayMat.rows() / 8, iCannyUpperThreshold, iAccumulator,
+                iMinRadius, iMaxRadius);
+
+// draw
+        if (circles.cols() > 0)
+        {
+            Toast.makeText(this, "Coins : " +circles.cols() , Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "No coins found", Toast.LENGTH_LONG).show();
+        }
         return bitmap;
     }
 
